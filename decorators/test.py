@@ -2,7 +2,6 @@ import requests
 import time
 import re
 from random import randint
-import functools
 
 BOOK_PATH = 'https://www.gutenberg.org/files/2638/2638-0.txt'
 def benchmark(func):
@@ -51,10 +50,14 @@ def memo(func):
   Декоратор, запоминающий результаты исполнения функции func, чьи аргументы args должны быть хешируемыми
   """
   cache = {}
-  @functools.lru_cache
   def fmemo(*args):
-      cache[hash(*args)] = func(*args)
-      return func(*args)
+      k = hash(args)
+      if k in cache:
+          return cache[k]
+      else:
+          res = func(*args)
+          cache[k] = res
+          return res
   fmemo.cache = cache
   return fmemo
 
@@ -87,7 +90,7 @@ def fib(n):
     return fib(n-2) + fib(n-1)
 
 start = time.perf_counter()
-fib(30)
+fib(32)
 end = time.perf_counter()
 print(f'Время выполнения функции fib: {end - start}')
 
@@ -98,6 +101,6 @@ def fib(n):
     return fib(n-2) + fib(n-1)
 
 start = time.perf_counter()
-fib(30)
+fib(32)
 end = time.perf_counter()
 print(f'Время выполнения функции fib: {end - start}')

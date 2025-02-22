@@ -64,7 +64,7 @@ def memo(func):
   cache = {}
   @functools.lru_cache
   def fmemo(*args):
-      cache[hash(*args)] = args
+      cache[hash(*args)] = func(*args)
       return func(*args)
   fmemo.cache = cache
   return fmemo

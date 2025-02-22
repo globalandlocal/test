@@ -45,17 +45,6 @@ def counter(func):
     wrapper.calls=0
     return wrapper
 
-def memo(func):
-  """
-  Декоратор, запоминающий результаты исполнения функции func, чьи аргументы args должны быть хешируемыми
-  """
-  cache = {}
-  @functools.lru_cache()
-  def fmemo(*args):
-      res = func(*args)
-      return res
-  fmemo.cache = cache
-  return fmemo
 
 def memo(func):
   """
